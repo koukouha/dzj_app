@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
  * Created by hongbo.gao on 2017/12/22.
  */
 
-public class MyAdapter extends BaseAdapter {
+public class MyGridAdapter extends BaseAdapter {
     private Context context;
 
     private Integer[] bookItems = {
@@ -23,7 +23,7 @@ public class MyAdapter extends BaseAdapter {
             R.drawable.book, R.drawable.book, R.drawable.book,
     };
 
-    MyAdapter(Context context){
+    MyGridAdapter(Context context){
         this.context = context;
     }
 

@@ -1,16 +1,12 @@
 package com.demo.dzj.dzj;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -43,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
         gridView.setStretchMode(gridView.STRETCH_COLUMN_WIDTH);
         gridView.setGravity(Gravity.CENTER);
 //        gridView.setBackgroundColor(Color.GREEN);
-        gridView.setAdapter(new MyAdapter(this));
+        gridView.setAdapter(new MyGridAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "book"+position, Toast.LENGTH_SHORT).show();
+
             }
         });
         return gridView;
