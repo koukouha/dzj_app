@@ -1,9 +1,13 @@
 package com.demo.dzj.dzj;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -13,8 +17,6 @@ import android.widget.ListView;
  */
 
 public class TitleListView extends AppCompatActivity {
-
-    private static final int RESOURCE_LinearLayout_ID = 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +28,8 @@ public class TitleListView extends AppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setLayoutParams(layoutParams);
         linearLayout.addView(createListView());
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+        setContentView(linearLayout);
     }
 
     private ListView createListView() {
@@ -35,12 +39,24 @@ public class TitleListView extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         listView.setLayoutParams(layoutParams);
-        listView.setId(RESOURCE_LinearLayout_ID);
         String[] titleList = new String[]{
-                "111","111","111","111","111","111"
+                "般若波罗蜜多心经",
+                "般若波罗密金刚经",
+                "大智度论",
+                "瑜伽师地论",
+                "佛母大孔雀明王经",
+                "圆觉经"
         };
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, RESOURCE_LinearLayout_ID, titleList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,     titleList);
         listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(TitleListView.this, BookView.class);
+                startActivity(intent);
+            }
+        });
 
         return listView;
     }

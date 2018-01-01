@@ -1,10 +1,12 @@
 package com.demo.dzj.dzj;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -22,10 +24,9 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.setLayoutParams(params);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setGravity(Gravity.TOP);
-//        linearLayout.setBackgroundColor(Color.YELLOW);
         linearLayout.addView(createGridView());
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(linearLayout);
-//        setContentView(R.layout.activity_main);
     }
 
     private GridView createGridView() {
@@ -38,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
         gridView.setHorizontalSpacing(10);
         gridView.setStretchMode(gridView.STRETCH_COLUMN_WIDTH);
         gridView.setGravity(Gravity.CENTER);
-//        gridView.setBackgroundColor(Color.GREEN);
         gridView.setAdapter(new MyGridAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "book"+position, Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(MainActivity.this, TitleListView.class);
+                startActivity(intent);
             }
         });
         return gridView;
