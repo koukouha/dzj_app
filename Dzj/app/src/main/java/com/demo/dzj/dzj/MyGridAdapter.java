@@ -2,6 +2,10 @@ package com.demo.dzj.dzj;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,6 +15,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.demo.dzj.dzj.utils.HttpGetCategory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by hongbo.gao on 2017/12/22.
  */
@@ -19,22 +28,29 @@ public class MyGridAdapter extends BaseAdapter {
 
     private Context context;
 
-    MyGridAdapter(Context context){
+    private ArrayList titleList = new ArrayList();
+
+    MyGridAdapter(Context context) throws Exception {
         this.context = context;
     }
 
-    private static String title[] = {
-            "大乘般若部", "大乘宝积部", "大乘大集部",
-            "大乘华严部", "大乘涅槃部", "五大部外重译经",
-            "大乘单译经", "小乘阿含部", "小乘单译经",
-            "宋元入藏诸经", "大乘律", "小乘律",
-            "大乘论", "小乘论", "宋元续入藏诸论",
-            "西土圣贤撰集", "此土著述",
-    };
+    MyGridAdapter(Context context, ArrayList<String> titleList) throws Exception {
+        this.context = context;
+        this.titleList = titleList;
+    }
+
+//    private static String titleList[] = {
+//            "大乘般若部", "大乘宝积部", "大乘大集部",
+//            "大乘华严部", "大乘涅槃部", "五大部外重译经",
+//            "大乘单译经", "小乘阿含部", "小乘单译经",
+//            "宋元入藏诸经", "大乘律", "小乘律",
+//            "大乘论", "小乘论", "宋元续入藏诸论",
+//            "西土圣贤撰集", "此土著述",
+//    };
 
     @Override
     public int getCount() {
-        return title.length;
+        return titleList.size();
     }
 
     @Override
@@ -78,7 +94,7 @@ public class MyGridAdapter extends BaseAdapter {
         textView.setLayoutParams(lp);
         textView.setEms(1);
 //        textView.setTextSize(20);
-        textView.setText(title[position]);
+        textView.setText((String)titleList.get(position));
 
         frameLayout.addView(imageView);
         frameLayout.addView(textView);
