@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     private GridView createGridView(ArrayList<String> titleList) throws Exception {
         GridView gridView = new GridView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         gridView.setLayoutParams(params);
         gridView.setNumColumns(3);
         gridView.setVerticalSpacing(10);

@@ -95,7 +95,8 @@ public class TitleListView extends AppCompatActivity {
                 ArrayList<HashMap<String, Object>> jsonElementList = HttpCallAPI.AnalysisTitleList(val);
                 for (HashMap<String, Object> element:jsonElementList) {
                     bookIdList.add(Integer.parseInt((String) element.get("dzj_id")));
-                    bookTitleList.add((String) element.get("dzj_title_text"));
+                    bookTitleList.add(((String) element.get("dzj_title_text"))
+                            .replace(".txt", "").replaceAll(".*部～",""));
                 }
                 LinearLayout linearLayout = (LinearLayout) findViewById(Constant.TITLE_LIST_RESOURCE_ID);
                 linearLayout.addView(createListView(bookTitleList));

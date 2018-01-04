@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -54,9 +55,12 @@ public class BookView extends AppCompatActivity {
         TextView bookView = new TextView(this);
         bookView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        bookView.setBackgroundColor(Color.GRAY);
+        bookView.setBackgroundColor(Color.WHITE);
         bookView.setTextColor(Color.BLACK);
-        bookView.setTextSize(20);
+        bookView.setTextSize(15);
+        bookView.setVerticalScrollBarEnabled(true);
+        bookView.setSingleLine(false);
+        bookView.setMovementMethod(ScrollingMovementMethod.getInstance());
         bookView.setId(Constant.BOOK_VIEW_RESOURCE_ID);
 //        bookView.setText(bookContent);
 

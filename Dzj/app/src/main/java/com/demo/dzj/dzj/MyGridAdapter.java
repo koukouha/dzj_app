@@ -1,6 +1,7 @@
 package com.demo.dzj.dzj;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -40,7 +41,9 @@ public class MyGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return titleList.size();
+        int count = titleList.size();
+        Log.i("mylog", "get count:" + count);
+        return count;
     }
 
     @Override
@@ -57,9 +60,12 @@ public class MyGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         FrameLayout categoryView;
         if (convertView == null) {
+            Log.i("mylog", "convertView == null" + "position:" + position);
             categoryView = createCategoryView(position);
         } else {
-            categoryView = (FrameLayout)convertView;
+            Log.i("mylog", "convertView != null" + "position:" + position);
+//            categoryView = (FrameLayout)convertView;
+            categoryView = createCategoryView(position);
         }
         return categoryView;
     }
@@ -84,7 +90,9 @@ public class MyGridAdapter extends BaseAdapter {
         textView.setLayoutParams(lp);
         textView.setEms(1);
 //        textView.setTextSize(20);
-        textView.setText((String)titleList.get(position));
+        String title = (String)titleList.get(position);
+        textView.setText(title);
+        Log.i("mylog", "position:" + position + ", title:" + title);
 
         frameLayout.addView(imageView);
         frameLayout.addView(textView);
