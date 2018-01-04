@@ -1,24 +1,14 @@
 package com.demo.dzj.dzj;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.demo.dzj.dzj.utils.HttpGetCategory;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by hongbo.gao on 2017/12/22.

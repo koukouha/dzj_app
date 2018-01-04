@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by hongbo.gao on 2018/1/3.
  */
 
-public class HttpGetCategory {
+public class HttpCallAPI {
 
     public static String getJson(String urlPath) throws Exception {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -33,7 +33,7 @@ public class HttpGetCategory {
         return new String(outStream.toByteArray());
     }
 
-    public static ArrayList<HashMap<String, Object>> Analysis(String jsonStr)
+    public static ArrayList<HashMap<String, Object>> AnalysisCategoryList(String jsonStr)
             throws JSONException {
         /******************* 解析 ***********************/
         JSONArray jsonArray = null;
@@ -43,11 +43,37 @@ public class HttpGetCategory {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             // 初始化map数组对象
-            HashMap<String, Object> map = new HashMap<String, Object>();
+            HashMap<String, Object> map = new HashMap<>();
             map.put("dzj_category_id", jsonObject.getString("dzj_category_id"));
             map.put("dzj_category_text", jsonObject.getString("dzj_category_text"));
             list.add(map);
         }
         return list;
+    }
+
+    public static ArrayList<HashMap<String, Object>> AnalysisTitleList(String jsonStr)
+            throws JSONException {
+        /******************* 解析 ***********************/
+        JSONArray jsonArray = null;
+        // 初始化list数组对象
+        ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+        jsonArray = new JSONArray(jsonStr);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            // 初始化map数组对象
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("dzj_id", jsonObject.getString("dzj_id"));
+            map.put("dzj_category_id", jsonObject.getString("dzj_category_id"));
+            map.put("dzj_title_text", jsonObject.getString("dzj_title_text"));
+            list.add(map);
+        }
+        return list;
+    }
+
+    public static String AnalysisBook(String jsonStr)
+            throws JSONException {
+        /******************* 解析 ***********************/;
+        JSONObject jsonObject = new JSONObject(jsonStr);
+        return jsonObject.getString("dzj_text");
     }
 }
