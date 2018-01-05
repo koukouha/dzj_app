@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.demo.dzj.dzj.utils.Constant;
+import com.demo.dzj.dzj.utils.DividePage;
 import com.demo.dzj.dzj.utils.HttpCallAPI;
 
 import org.json.JSONException;
@@ -84,6 +85,9 @@ public class BookView extends AppCompatActivity {
                 TextView bookView = (TextView) findViewById(Constant.BOOK_VIEW_RESOURCE_ID);
                 String bookContent = HttpCallAPI.AnalysisBook(val);
                 bookView.setText(bookContent);
+                DividePage divider = new DividePage();
+                int[] pages = divider.getPage(bookView);
+                Log.i("mylog", "请求结果为-->" + pages);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
