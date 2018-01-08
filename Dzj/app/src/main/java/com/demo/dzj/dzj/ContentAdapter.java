@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.demo.dzj.dzj.utils.Constant;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class ContentAdapter extends PagerAdapter {
         }else {
             textView=new TextView(container.getContext());
         }
+        textView.setTextSize(Constant.PAGE_VIEW_TEXT_SIZE);
         textView.setText(getText(position));
         container.addView(textView);
         return textView;

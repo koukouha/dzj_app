@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -52,20 +53,30 @@ public class BookView extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setGravity(Gravity.TOP);
+        linearLayout.setId(Constant.BOOK_LAYOUT_RESOURCE_ID);
+
 
         TextView bookView = new TextView(this);
         bookView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         bookView.setBackgroundColor(Color.WHITE);
         bookView.setTextColor(Color.BLACK);
-        bookView.setTextSize(15);
+        bookView.setTextSize(Constant.PAGE_VIEW_TEXT_SIZE);
         bookView.setVerticalScrollBarEnabled(true);
         bookView.setSingleLine(false);
         bookView.setMovementMethod(ScrollingMovementMethod.getInstance());
         bookView.setId(Constant.BOOK_VIEW_RESOURCE_ID);
 //        bookView.setText(bookContent);
-
         linearLayout.addView(bookView);
+
+        ViewPager pageView = new ViewPager(this);
+        pageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        pageView.setBackgroundColor(Color.WHITE);
+        pageView.setId(Constant.PAGE_VIEW_RESOURCE_ID);
+
+
+        linearLayout.addView(pageView);
 
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(linearLayout);
@@ -82,12 +93,22 @@ public class BookView extends AppCompatActivity {
             String val = data.getString("value");
             Log.i("mylog", "请求结果为-->" + val);
             try {
+                LinearLayout linearLayout = (LinearLayout) findViewById(Constant.BOOK_LAYOUT_RESOURCE_ID);
                 TextView bookView = (TextView) findViewById(Constant.BOOK_VIEW_RESOURCE_ID);
                 String bookContent = HttpCallAPI.AnalysisBook(val);
                 bookView.setText(bookContent);
                 DividePage divider = new DividePage();
                 int[] pages = divider.getPage(bookView);
                 Log.i("mylog", "请求结果为-->" + pages);
+
+                ViewPager pageView = (ViewPager) findViewById(Constant.PAGE_VIEW_RESOURCE_ID);
+                ContentAdapter contentAdapter = new ContentAdapter(pages, bookContent);
+                pageView.setAdapter(contentAdapter);
+
+                linearLayout.removeView(bookView);
+                linearLayout.removeView(pageView);
+                linearLayout.addView(pageView);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -12,5 +12,11 @@ public class Constant {
 
     public static final int BOOK_VIEW_RESOURCE_ID = 1003;
 
-    public static final String BASE_URL = "http://10.126.240.51:8080/dzj_api/";
+    public static final int PAGE_VIEW_RESOURCE_ID = 1004;
+
+    public static final int BOOK_LAYOUT_RESOURCE_ID = 1005;
+
+    public static final int PAGE_VIEW_TEXT_SIZE = 20;
+
+    public static final String BASE_URL = "http://10.126.240.58:8080/dzj_api/";
 }
