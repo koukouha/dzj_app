@@ -77,6 +77,7 @@ public class TitleListView extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(TitleListView.this, BookView.class);
                 intent.putExtra("bookId", bookIdList.get(i));
+                intent.putExtra("bookTitle", bookTitleList.get(i));
                 startActivity(intent);
             }
         });

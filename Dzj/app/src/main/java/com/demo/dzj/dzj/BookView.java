@@ -1,6 +1,5 @@
 package com.demo.dzj.dzj;
 
-import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,10 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.demo.dzj.dzj.utils.Constant;
@@ -20,9 +18,6 @@ import com.demo.dzj.dzj.utils.DividePage;
 import com.demo.dzj.dzj.utils.HttpCallAPI;
 
 import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -32,6 +27,7 @@ import java.util.HashMap;
 public class BookView extends AppCompatActivity {
 
     private int bookId;
+    private String bookTitle;
 
 //    private static String bookContent = "观自在菩萨，行深般若波罗蜜多时，照见五蕴皆空，度一切苦厄。" +
 //            "舍利子，色不异空，空不异色，色即是空，空即是色，受想行识亦复如是。" +
@@ -47,18 +43,24 @@ public class BookView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         bookId = getIntent().getIntExtra("bookId", 250);
+        bookTitle = getIntent().getStringExtra("bookTitle");
 
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        RelativeLayout bookViewLayout = new RelativeLayout(this);
+        bookViewLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setGravity(Gravity.TOP);
-        linearLayout.setId(Constant.BOOK_LAYOUT_RESOURCE_ID);
+        bookViewLayout.setId(Constant.BOOK_LAYOUT_RESOURCE_ID);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
 
+        bookViewLayout.addView(createHeader());
+        bookViewLayout.addView(createFooter());
 
         TextView bookView = new TextView(this);
-        bookView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.BELOW, Constant.HEADER_VIEW_RESOURCE_ID);
+        params.addRule(RelativeLayout.ABOVE, Constant.FOOTER_VIEW_RESOURCE_ID);
+        bookView.setLayoutParams(params);
         bookView.setBackgroundColor(Color.WHITE);
         bookView.setTextColor(Color.BLACK);
         bookView.setTextSize(Constant.PAGE_VIEW_TEXT_SIZE);
@@ -67,21 +69,59 @@ public class BookView extends AppCompatActivity {
         bookView.setMovementMethod(ScrollingMovementMethod.getInstance());
         bookView.setId(Constant.BOOK_VIEW_RESOURCE_ID);
 //        bookView.setText(bookContent);
-        linearLayout.addView(bookView);
+        bookViewLayout.addView(bookView);
 
-        ViewPager pageView = new ViewPager(this);
-        pageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        pageView.setBackgroundColor(Color.WHITE);
-        pageView.setId(Constant.PAGE_VIEW_RESOURCE_ID);
-
-
-        linearLayout.addView(pageView);
-
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
-        setContentView(linearLayout);
-
+        setContentView(bookViewLayout);
         new Thread(getBookContent).start();
+    }
+
+    private RelativeLayout createHeader() {
+        RelativeLayout headerView = new RelativeLayout(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        headerView.setLayoutParams(params);
+        headerView.setBackgroundColor(Color.BLUE);
+        TextView textView = new TextView(this);
+        textView.setText(bookTitle);
+        textView.setTextColor(Color.WHITE);
+        headerView.addView(textView);
+        headerView.setId(Constant.HEADER_VIEW_RESOURCE_ID);
+        return headerView;
+    }
+
+    private RelativeLayout createFooter() {
+        RelativeLayout footerView = new RelativeLayout(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        footerView.setLayoutParams(params);
+        footerView.setBackgroundColor(Color.BLUE);
+        footerView.setId(Constant.FOOTER_VIEW_RESOURCE_ID);
+
+        TextView pageNumView = new TextView(this);
+        pageNumView.setText("1");
+        pageNumView.setTextColor(Color.WHITE);
+        pageNumView.setId(Constant.PAGE_NUM_VIEW_RESOURCE_ID);
+
+
+        TextView pageSumView = new TextView(this);
+        RelativeLayout.LayoutParams pageSumLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        pageSumLayoutParams.addRule(RelativeLayout.RIGHT_OF, Constant.PAGE_NUM_VIEW_RESOURCE_ID);
+
+        pageSumView.setText(" / loading page...");
+        pageSumView.setTextColor(Color.WHITE);
+        pageSumView.setId(Constant.PAGE_SUM_VIEW_RESOURCE_ID);
+
+        footerView.addView(pageNumView);
+        footerView.addView(pageSumView, pageSumLayoutParams);
+
+        return footerView;
     }
 
 
@@ -93,22 +133,47 @@ public class BookView extends AppCompatActivity {
             String val = data.getString("value");
             Log.i("mylog", "请求结果为-->" + val);
             try {
-                LinearLayout linearLayout = (LinearLayout) findViewById(Constant.BOOK_LAYOUT_RESOURCE_ID);
+                RelativeLayout linearLayout = (RelativeLayout) findViewById(Constant.BOOK_LAYOUT_RESOURCE_ID);
                 TextView bookView = (TextView) findViewById(Constant.BOOK_VIEW_RESOURCE_ID);
                 String bookContent = HttpCallAPI.AnalysisBook(val);
                 bookView.setText(bookContent);
                 DividePage divider = new DividePage();
                 int[] pages = divider.getPage(bookView);
-                Log.i("mylog", "请求结果为-->" + pages);
+                int sum = pages.length;
+                TextView pageSumView = (TextView) findViewById(Constant.PAGE_SUM_VIEW_RESOURCE_ID);
+                pageSumView.setText(" / " + sum);
 
-                ViewPager pageView = (ViewPager) findViewById(Constant.PAGE_VIEW_RESOURCE_ID);
+                ViewPager pageView = new ViewPager(BookView.this);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                params.addRule(RelativeLayout.BELOW, Constant.HEADER_VIEW_RESOURCE_ID);
+                params.addRule(RelativeLayout.ABOVE, Constant.FOOTER_VIEW_RESOURCE_ID);
+                pageView.setLayoutParams(params);
+                pageView.setBackgroundColor(Color.WHITE);
+                pageView.setId(Constant.PAGE_VIEW_RESOURCE_ID);
                 ContentAdapter contentAdapter = new ContentAdapter(pages, bookContent);
                 pageView.setAdapter(contentAdapter);
+                pageView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    TextView footer = (TextView) findViewById(Constant.PAGE_NUM_VIEW_RESOURCE_ID);
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        int num = position + 1;
+                        footer.setText(num + "");
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
                 linearLayout.removeView(bookView);
-                linearLayout.removeView(pageView);
                 linearLayout.addView(pageView);
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

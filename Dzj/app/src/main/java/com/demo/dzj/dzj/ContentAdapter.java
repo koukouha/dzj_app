@@ -3,9 +3,12 @@ package com.demo.dzj.dzj;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.demo.dzj.dzj.utils.Constant;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
